@@ -1,0 +1,9 @@
+# .idea/intellij specific stuff
+.idea/
+*.iml
+
+target/
+data/
+
+
+© 2020 GitHub, Inc.
