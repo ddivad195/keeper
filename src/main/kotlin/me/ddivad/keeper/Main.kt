@@ -69,9 +69,9 @@ fun main(args: Array<String>) {
                 permissionsService.hasClearance(member, permission)
             }
 
-            it.jda.guilds.forEach {
-                configuration.setup(it)
-            }
+//            it.jda.guilds.forEach {
+//                configuration.setup(it)
+//            }
         }
     }
 }
