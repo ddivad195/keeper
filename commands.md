@@ -5,13 +5,19 @@
 | ----------- | ------------------------------ |
 | (Argument)  | Argument is not required.      |
 
-## GuildConfiguration
+## Configuration
 | Commands    | Arguments     | Description                                                |
 | ----------- | ------------- | ---------------------------------------------------------- |
-| SetPrefix   | Prefix        | Set the prefix required for the bot to register a command. |
-| SetRole     | Role          | Set the role required to use this bot.                     |
 | configure   |               | Configure a guild to use Keeper.                           |
+| setPrefix   | Prefix        | Set the prefix required for the bot to register a command. |
 | setReaction | Unicode Emote | Set the reaction used to save messages                     |
+| setRole     | Role          | Set the role required to use this bot.                     |
+
+## Operation
+| Commands | Arguments | Description                    |
+| -------- | --------- | ------------------------------ |
+| disable  |           | Enable the bot's functionality |
+| enable   |           | Enable the bot's functionality |
 
 ## Utility
 | Commands | Arguments | Description          |

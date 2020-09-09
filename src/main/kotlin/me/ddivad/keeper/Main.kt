@@ -1,5 +1,6 @@
 package me.ddivad.keeper
 
+import com.google.gson.Gson
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.extensions.requiredPermissionLevel
 import me.ddivad.keeper.services.PermissionsService
@@ -8,6 +9,13 @@ import me.jakejmattson.discordkt.api.extensions.jda.fullName
 import me.jakejmattson.discordkt.api.extensions.jda.profileLink
 import me.jakejmattson.discordkt.api.extensions.jda.toMember
 import java.awt.Color
+import java.util.*
+
+data class Properties(val author: String, val version: String, val discordKt: String, val repository: String)
+
+private val propFile = Properties::class.java.getResource("/properties.json").readText()
+val project: Properties = Gson().fromJson(propFile, Properties::class.java)
+val startTime = Date()
 
 fun main(args: Array<String>) {
     val token = args.firstOrNull()
@@ -30,36 +38,46 @@ fun main(args: Array<String>) {
             }
 
             mentionEmbed {
-                val guild = it.guild ?: return@mentionEmbed
+                with(project) {
+                    val guild = it.guild ?: return@mentionEmbed
+                    val jda = it.discord.jda
+                    val prefix = it.relevantPrefix
+                    val milliseconds = Date().time - startTime.time
+                    val seconds = (milliseconds / 1000) % 60
+                    val minutes = (milliseconds / (1000 * 60)) % 60
+                    val hours = (milliseconds / (1000 * 60 * 60)) % 24
+                    val days = (milliseconds / (1000 * 60 * 60 * 24))
+                    val role = configuration[guild.idLong]?.getLiveRole(jda)?.takeUnless { it == guild.publicRole }?.asMention
+                            ?: ""
 
-                val jda = it.discord.jda
-                val properties = it.discord.properties
-                val prefix = it.relevantPrefix
-                val role = configuration[guild.idLong]?.getLiveRole(jda)?.takeUnless { it == guild.publicRole }?.asMention
-                        ?: ""
-
-                author {
-                    jda.retrieveUserById(394484823944593409).queue { user ->
-                        iconUrl = user.effectiveAvatarUrl
-                        name = user.fullName()
-                        url = user.profileLink
+                    author {
+                        jda.retrieveUserById(394484823944593409).queue { user ->
+                            iconUrl = user.effectiveAvatarUrl
+                            name = user.fullName()
+                            url = user.profileLink
+                        }
                     }
-                }
 
-                simpleTitle = "Keeper"
-                thumbnail = jda.selfUser.effectiveAvatarUrl
-                color = infoColor
-                description = "A bot for saving useful messages." +
-                        (if (role.isNotBlank())
-                            "\nRequired Role: $role"
-                        else "") +
-                        "\nCurrent Prefix: `$prefix`" +
-                        "\nUse `${prefix}help` to see commands."
-
-                footer {
-                    text = "2.1.0 - ${properties.libraryVersion} - ${properties.jdaVersion}"
+                    simpleTitle = "Keeper"
+                    thumbnail = jda.selfUser.effectiveAvatarUrl
+                    color = infoColor
+                    description = "A bot for saving useful messages to a DM by reacting to them."
+                    addInlineField("Required role", role)
+                    addInlineField("Prefix", prefix)
+                    addField("Config Info", "```" +
+                            "Enabled: ${configuration[it.guild!!.idLong]?.enabled}\n" +
+                            "Reaction: ${configuration[it.guild!!.idLong]?.bookmarkReaction}\n" +
+                            "```")
+                    addField("Bot Info", "```" +
+                            "Version: $version\n" +
+                            "DiscordKt: $discordKt\n" +
+                            "Kotlin: ${KotlinVersion.CURRENT}\n" +
+                            "Uptime: $days day(s), $hours hour(s), $minutes minute(s) and $seconds second(s)" +
+                            "```")
+                    addInlineField("Source", repository)
                 }
             }
+
 
             visibilityPredicate {
                 val guild = it.guild ?: return@visibilityPredicate false
@@ -68,10 +86,6 @@ fun main(args: Array<String>) {
 
                 permissionsService.hasClearance(member, permission)
             }
-
-//            it.jda.guilds.forEach {
-//                configuration.setup(it)
-//            }
         }
     }
 }

@@ -12,17 +12,19 @@ data class Configuration(val botOwner: Long = 394484823944593409,
     fun setup(guild: Guild, prefix: String, role: Role, reaction: String) {
         if (guildConfigurations[guild.idLong] != null) return
 
-        val newConfiguration = GuildConfiguration(prefix, role.idLong, reaction)
+        val newConfiguration = GuildConfiguration(prefix, role.idLong, reaction, true)
 
         guildConfigurations[guild.idLong] = newConfiguration
         save()
     }
+    fun hasGuildConfig(guildId: Long) = guildConfigurations.containsKey(guildId)
 }
 
 data class GuildConfiguration(
         var prefix: String,
         var requiredRoleId: Long,
-        var bookmarkReaction: String
+        var bookmarkReaction: String,
+        var enabled: Boolean
 ) {
     fun getLiveRole(jda: JDA) = jda.getRoleById(requiredRoleId)
 }
