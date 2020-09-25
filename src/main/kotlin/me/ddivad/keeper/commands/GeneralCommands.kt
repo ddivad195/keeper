@@ -11,7 +11,7 @@ import me.jakejmattson.discordkt.api.services.ConversationService
 @CommandSet("General")
 fun generalCommands(configuration: Configuration) = commands {
     command("delete") {
-        description = "Enable the bot's functionality"
+        description = "Delete a Keeper bookmark by ID inside of DM channel"
         requiresGuild = false
         requiredPermissionLevel = Permission.EVERYONE
         execute(MessageArg) {
