@@ -13,11 +13,17 @@
 | setReaction | Unicode Emote | Set the reaction used to save messages                     |
 | setRole     | Role          | Set the role required to use this bot.                     |
 
+## General
+| Commands | Arguments | Description                    |
+| -------- | --------- | ------------------------------ |
+| delete   | Message   | Enable the bot's functionality |
+
 ## Operation
 | Commands | Arguments | Description                    |
 | -------- | --------- | ------------------------------ |
 | disable  |           | Enable the bot's functionality |
 | enable   |           | Enable the bot's functionality |
+| stats    |           | View statistics about Keeper   |
 
 ## Utility
 | Commands | Arguments | Description          |
