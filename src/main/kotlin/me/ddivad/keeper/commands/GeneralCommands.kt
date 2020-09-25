@@ -13,7 +13,7 @@ fun generalCommands(configuration: Configuration) = commands {
     command("delete") {
         description = "Enable the bot's functionality"
         requiresGuild = false
-        requiredPermissionLevel = Permission.NONE
+        requiredPermissionLevel = Permission.EVERYONE
         execute(MessageArg) {
             val message = it.args.first
 

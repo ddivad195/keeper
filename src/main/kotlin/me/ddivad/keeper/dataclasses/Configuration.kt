@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Role
 
 data class Configuration(val botOwner: Long = 394484823944593409,
+                         var totalBookmarks: Int = 0,
                          val guildConfigurations: MutableMap<Long, GuildConfiguration> = mutableMapOf()) : Data("config/config.json") {
     operator fun get(id: Long) = guildConfigurations[id]
 
@@ -24,7 +25,8 @@ data class GuildConfiguration(
         var prefix: String,
         var requiredRoleId: Long,
         var bookmarkReaction: String,
-        var enabled: Boolean
+        var enabled: Boolean,
+        var bookmarkCount: Int = 0
 ) {
     fun getLiveRole(jda: JDA) = jda.getRoleById(requiredRoleId)
 }

@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.extensions.requiredPermissionLevel
 import me.ddivad.keeper.services.PermissionsService
+import me.ddivad.keeper.services.StatisticsService
 import me.jakejmattson.discordkt.api.dsl.bot
 import me.jakejmattson.discordkt.api.extensions.jda.fullName
 import me.jakejmattson.discordkt.api.extensions.jda.profileLink
@@ -23,8 +24,8 @@ fun main(args: Array<String>) {
 
     bot(token) {
         configure {
-            val (configuration, permissionsService)
-                    = it.getInjectionObjects(Configuration::class, PermissionsService::class)
+            val (configuration, permissionsService, statsService: StatisticsService)
+                    = it.getInjectionObjects(Configuration::class, PermissionsService::class, StatisticsService::class)
 
             commandReaction = null
             allowMentionPrefix = true
@@ -42,11 +43,6 @@ fun main(args: Array<String>) {
                     val guild = it.guild ?: return@mentionEmbed
                     val jda = it.discord.jda
                     val prefix = it.relevantPrefix
-                    val milliseconds = Date().time - startTime.time
-                    val seconds = (milliseconds / 1000) % 60
-                    val minutes = (milliseconds / (1000 * 60)) % 60
-                    val hours = (milliseconds / (1000 * 60 * 60)) % 24
-                    val days = (milliseconds / (1000 * 60 * 60 * 24))
                     val role = configuration[guild.idLong]?.getLiveRole(jda)?.takeUnless { it == guild.publicRole }?.asMention
                             ?: ""
 
@@ -72,7 +68,7 @@ fun main(args: Array<String>) {
                             "Version: $version\n" +
                             "DiscordKt: $discordKt\n" +
                             "Kotlin: ${KotlinVersion.CURRENT}\n" +
-                            "Uptime: $days day(s), $hours hour(s), $minutes minute(s) and $seconds second(s)" +
+                            "Uptime: ${statsService.uptime}" +
                             "```")
                     addInlineField("Source", repository)
                 }
@@ -84,7 +80,7 @@ fun main(args: Array<String>) {
                 val member = it.user.toMember(guild)!!
                 val permission = it.command.requiredPermissionLevel
 
-                permissionsService.hasClearance(member, permission)
+                permissionsService.hasClearance(guild, it.user, permission)
             }
         }
     }

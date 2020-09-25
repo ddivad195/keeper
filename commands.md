@@ -23,6 +23,7 @@
 | -------- | --------- | ------------------------------ |
 | disable  |           | Enable the bot's functionality |
 | enable   |           | Enable the bot's functionality |
+| stats    |           | View statistics about Keeper   |
 
 ## Utility
 | Commands | Arguments | Description          |
