@@ -13,6 +13,11 @@
 | setReaction | Unicode Emote | Set the reaction used to save messages                     |
 | setRole     | Role          | Set the role required to use this bot.                     |
 
+## General
+| Commands | Arguments | Description                    |
+| -------- | --------- | ------------------------------ |
+| delete   | Message   | Enable the bot's functionality |
+
 ## Operation
 | Commands | Arguments | Description                    |
 | -------- | --------- | ------------------------------ |
