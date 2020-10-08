@@ -14,13 +14,12 @@ import java.util.*
 
 data class Properties(val author: String, val version: String, val discordKt: String, val repository: String)
 
-private val propFile = Properties::class.java.getResource("/properties.json").readText()
-val project: Properties = Gson().fromJson(propFile, Properties::class.java)
 val startTime = Date()
 
 fun main(args: Array<String>) {
-    val token = args.firstOrNull()
-            ?: throw IllegalArgumentException("No program arguments provided. Expected bot token.")
+    val token = System.getenv("BOT_TOKEN") ?: null
+    val prefix = System.getenv("DEFAULT_PREFIX") ?: "<none>"
+    require(token != null) { "Expected the bot token as an environment variable" }
 
     bot(token) {
         configure {
@@ -31,7 +30,7 @@ fun main(args: Array<String>) {
             allowMentionPrefix = true
 
             prefix {
-                it.guild?.let { configuration[it.idLong]?.prefix } ?: "<none>"
+                it.guild?.let { configuration[it.idLong]?.prefix } ?: prefix
             }
 
             colors {
@@ -39,7 +38,6 @@ fun main(args: Array<String>) {
             }
 
             mentionEmbed {
-                with(project) {
                     val guild = it.guild ?: return@mentionEmbed
                     val jda = it.discord.jda
                     val prefix = it.relevantPrefix
@@ -65,14 +63,13 @@ fun main(args: Array<String>) {
                             "Reaction: ${configuration[it.guild!!.idLong]?.bookmarkReaction}\n" +
                             "```")
                     addField("Bot Info", "```" +
-                            "Version: $version\n" +
-                            "DiscordKt: $discordKt\n" +
+                            "Version: 1.2.0\n" +
+                            "DiscordKt: 0.19.0\n" +
                             "Kotlin: ${KotlinVersion.CURRENT}\n" +
                             "Uptime: ${statsService.uptime}" +
                             "```")
-                    addInlineField("Source", repository)
+                    addInlineField("Source", "http://github.com/ddivad195/keeper")
                 }
-            }
 
 
             visibilityPredicate {

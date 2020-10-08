@@ -1,17 +1,10 @@
+FROM gradle:6.5.1-jdk14 AS build
+COPY --chown=gradle:gradle . /starter
+WORKDIR /starter
+RUN gradle shadowJar --no-daemon
 
-FROM maven:3.6.0-jdk-11-slim AS build
-
-COPY pom.xml /pom.xml
-COPY src /src/
-
-RUN mvn clean package -f /pom.xml
-
-# Run stage
-FROM openjdk:12
-
-ENV BOT_TOKEN=UNSET
-
+FROM openjdk:11.0.8-jre-slim
 RUN mkdir /config/
-COPY --from=build /target/Keeper-jar-with-dependencies.jar /Keeper.jar
+COPY --from=build /keeper/build/libs/*.jar /
 
-CMD /usr/bin/java -jar /Keeper.jar $BOT_TOKEN
+ENTRYPOINT ["java", "-jar", "/Keeper.jar"]
