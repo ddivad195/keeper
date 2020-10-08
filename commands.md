@@ -14,9 +14,9 @@
 | setRole     | Role          | Set the role required to use this bot.                     |
 
 ## General
-| Commands | Arguments | Description                    |
-| -------- | --------- | ------------------------------ |
-| delete   | Message   | Enable the bot's functionality |
+| Commands | Arguments | Description                                         |
+| -------- | --------- | --------------------------------------------------- |
+| delete   | Message   | Delete a Keeper bookmark by ID inside of DM channel |
 
 ## Operation
 | Commands | Arguments | Description                    |
