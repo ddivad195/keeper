@@ -2,43 +2,42 @@ package me.ddivad.keeper.commands
 
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.services.StatisticsService
-import me.ddivad.keeper.utilities.buildStatsEmbed
-import me.jakejmattson.discordkt.api.annotations.CommandSet
-import me.jakejmattson.discordkt.api.dsl.command.commands
-import me.jakejmattson.discordkt.api.services.ConversationService
+import me.ddivad.keeper.embeds.buildStatsEmbed
+import me.jakejmattson.discordkt.api.dsl.commands
 
-@CommandSet("Operation")
-fun operationCommands(configuration: Configuration, conversationService: ConversationService, statsService: StatisticsService) = commands {
-    command("enable") {
+fun operationCommands(configuration: Configuration, statsService: StatisticsService) = commands("Operation") {
+    guildCommand("enable") {
         description = "Enable the bot's functionality"
         execute {
-            if (!configuration.hasGuildConfig(it.guild!!.idLong))
-                return@execute it.respond("Please run the **configure** command to set this initially.")
-
-            configuration[it.guild!!.idLong]?.enabled = true
+            if (!configuration.hasGuildConfig(guild.id.longValue)) {
+                respond("Guild configuration exists. To modify it use the commands to set values.")
+                return@execute
+            }
+            configuration[guild.id.longValue]?.enabled = true
             configuration.save()
-
-            it.respond("Bot enabled")
+            respond("Bot enabled")
         }
     }
 
-    command("disable") {
+    guildCommand("disable") {
         description = "Enable the bot's functionality"
         execute {
-            if (!configuration.hasGuildConfig(it.guild!!.idLong))
-                return@execute it.respond("Please run the **configure** command to set this initially.")
-
-            configuration[it.guild!!.idLong]?.enabled = false
+            if (!configuration.hasGuildConfig(guild.id.longValue)) {
+                respond("Guild configuration exists. To modify it use the commands to set values.")
+                return@execute
+            }
+            configuration[guild.id.longValue]?.enabled = false
             configuration.save()
-
-            it.respond("Bot disabled")
+            respond("Bot disabled")
         }
     }
 
-    command("stats") {
+    guildCommand("stats") {
         description = "View statistics about Keeper"
         execute {
-            it.respond(buildStatsEmbed(it.guild!!, configuration, statsService))
+            respond {
+                buildStatsEmbed(guild, configuration, statsService)
+            }
         }
     }
 }

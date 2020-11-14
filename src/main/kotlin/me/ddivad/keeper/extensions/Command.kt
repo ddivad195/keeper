@@ -2,7 +2,7 @@ package me.ddivad.keeper.extensions
 
 import me.ddivad.keeper.services.DEFAULT_REQUIRED_PERMISSION
 import me.ddivad.keeper.services.Permission
-import me.jakejmattson.discordkt.api.dsl.command.Command
+import me.jakejmattson.discordkt.api.dsl.Command
 
 val commandPermissions: MutableMap<Command, Permission> = mutableMapOf()
 

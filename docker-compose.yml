@@ -1,10 +1,8 @@
 version: '3.7'
 services:
-  keeper:
-    container_name: Keeper
-    build:
-      dockerfile: Dockerfile
-      context: .
+  bot:
+    container_name: keeper
+    image: ddivad195/keeper:latest
     volumes:
       - type: bind
         source: ./config/config.json
