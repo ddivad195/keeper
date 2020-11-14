@@ -58,8 +58,8 @@ suspend fun main(args: Array<String>) {
                     "Reaction: ${guildConfiguration.bookmarkReaction}\n" +
                     "```")
             addField("Bot Info", "```" +
-                    "Version: 1.3.0\n" +
-                    "DiscordKt: 0.19.0\n" +
+                    "Version: 1.3.1\n" +
+                    "DiscordKt: 0.22.0-SNAPSHOT\n" +
                     "Kotlin: ${KotlinVersion.CURRENT}\n" +
                     "```")
             addField("Uptime", statsService.uptime)

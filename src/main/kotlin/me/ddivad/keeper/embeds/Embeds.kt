@@ -11,11 +11,11 @@ import me.ddivad.keeper.services.StatisticsService
 import me.jakejmattson.discordkt.api.extensions.addField
 import java.awt.Color
 
-fun EmbedBuilder.buildSavedMessageEmbed(messageAuthor: User, message: Message, guild: Guild) {
+fun EmbedBuilder.buildSavedMessageEmbed(message: Message, guild: Guild) {
     color = Color(0x00BFFF)
     author {
-        name = messageAuthor.tag
-        icon = messageAuthor.avatar.url
+        name = message.author?.tag
+        icon = message.author?.avatar?.url
     }
     description = "**Saved from **${message.channel.mention}\n\n${message.content}"
     if (message.attachments.isNotEmpty()) image = message.attachments.first().url
