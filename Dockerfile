@@ -5,6 +5,6 @@ RUN gradle shadowJar --no-daemon
 
 FROM openjdk:11.0.8-jre-slim
 RUN mkdir /config/
-COPY --from=build /keeper/build/libs/*.jar /
+COPY --from=build /keeper/build/libs/Keeper.jar /
 
 ENTRYPOINT ["java", "-jar", "/Keeper.jar"]

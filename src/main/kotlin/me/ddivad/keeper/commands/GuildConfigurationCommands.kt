@@ -2,66 +2,66 @@ package me.ddivad.keeper.commands
 
 import me.ddivad.keeper.conversations.ConfigurationConversation
 import me.ddivad.keeper.dataclasses.Configuration
-import me.jakejmattson.discordkt.api.annotations.CommandSet
 import me.jakejmattson.discordkt.api.arguments.*
-import me.jakejmattson.discordkt.api.dsl.command.commands
-import me.jakejmattson.discordkt.api.services.ConversationService
+import me.jakejmattson.discordkt.api.dsl.commands
 
-@CommandSet("Configuration")
-fun guildConfigurationCommands(configuration: Configuration, conversationService: ConversationService) = commands {
-    command("configure") {
+fun guildConfigurationCommands(configuration: Configuration) = commands("Configuration") {
+    guildCommand("configure") {
         description = "Configure a guild to use Keeper."
         execute {
-            if (configuration.hasGuildConfig(it.guild!!.idLong))
-                return@execute it.respond("Guild configuration exists. To modify it use the commands to set values.")
-
-            conversationService.startPublicConversation<ConfigurationConversation>(it.author, it.channel, it.guild!!)
-            it.respond("Guild setup")
+            if (configuration.hasGuildConfig(guild.id.longValue)) {
+                respond("Guild configuration exists. To modify it use the commands to set values.")
+                return@execute
+            }
+            ConfigurationConversation(configuration)
+                    .createConfigurationConversation(guild)
+                    .startPublicly(discord, author, channel)
+            respond("Guild setup")
         }
     }
-    
-    command("setPrefix") {
+
+    guildCommand("setPrefix") {
         description = "Set the prefix required for the bot to register a command."
         execute(AnyArg("Prefix")) {
-            if (!configuration.hasGuildConfig(it.guild!!.idLong))
-                return@execute it.respond("Please run the **configure** command to set this initially.")
+            if (!configuration.hasGuildConfig(guild.id.longValue)) {
+                respond("Guild configuration exists. To modify it use the commands to set values.")
+                return@execute
+            }
 
-            val prefix = it.args.first
-
-            configuration[it.guild!!.idLong]?.prefix = prefix
+            val prefix = args.first
+            configuration[guild.id.longValue]?.prefix = prefix
             configuration.save()
-
-            it.respond("Prefix set to: $prefix")
+            respond("Prefix set to: $prefix")
         }
     }
 
-    command("setRole") {
+    guildCommand("setRole") {
         description = "Set the role required to use this bot."
         execute(RoleArg) {
-            if (!configuration.hasGuildConfig(it.guild!!.idLong))
-                return@execute it.respond("Please run the **configure** command to set this initially.")
+            if (!configuration.hasGuildConfig(guild.id.longValue)) {
+                respond("Guild configuration exists. To modify it use the commands to set values.")
+                return@execute
+            }
 
-            val requiredRole = it.args.first
-
-            configuration[it.guild!!.idLong]?.requiredRoleId = requiredRole.idLong
+            val requiredRole = args.first
+            configuration[guild.id.longValue]?.requiredRoleId = requiredRole.id.longValue
             configuration.save()
-
-            it.respond("Required role set to: ${requiredRole.name}")
+            respond("Required role set to: ${requiredRole.name}")
         }
 
 
-        command("setReaction") {
+        guildCommand("setReaction") {
             description = "Set the reaction used to save messages"
-            execute(UnicodeEmoteArg) {
-                if (!configuration.hasGuildConfig(it.guild!!.idLong))
-                    return@execute it.respond("Please run the **configure** command to set this initially.")
+            execute(UnicodeEmojiArg) {
+                if (!configuration.hasGuildConfig(guild.id.longValue)) {
+                    respond("Guild configuration exists. To modify it use the commands to set values.")
+                    return@execute
+                }
 
-                val reaction = it.args.first
-
-                configuration[it.guild!!.idLong]?.bookmarkReaction = reaction
+                val reaction = args.first
+                configuration[guild.id.longValue]?.bookmarkReaction = reaction.unicode
                 configuration.save()
-
-                it.respond("Reaction set to: $reaction")
+                respond("Reaction set to: $reaction")
             }
         }
     }

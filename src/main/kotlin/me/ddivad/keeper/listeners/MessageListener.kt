@@ -1,34 +1,32 @@
 package me.ddivad.keeper.listeners
 
-import com.google.common.eventbus.Subscribe
+import com.gitlab.kordlib.core.event.message.ReactionAddEvent
+import com.gitlab.kordlib.kordx.emoji.Emojis
+import com.gitlab.kordlib.kordx.emoji.addReaction
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.services.StatisticsService
-import me.ddivad.keeper.utilities.buildSavedMessageEmbed
-import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent
-import net.dv8tion.jda.api.events.message.priv.react.PrivateMessageReactionAddEvent
+import me.ddivad.keeper.embeds.buildSavedMessageEmbed
+import me.jakejmattson.discordkt.api.dsl.listeners
+import me.jakejmattson.discordkt.api.extensions.isSelf
+import me.jakejmattson.discordkt.api.extensions.sendPrivateMessage
 
-class MessageListener(private val configuration: Configuration, private val statsService: StatisticsService) {
-    @Subscribe
-    fun onGuildMessageReactionAddEvent(event: GuildMessageReactionAddEvent) {
-        if (event.user.isBot) return
-        if (!configuration[event.guild.idLong]?.enabled!!) return
-        if (event.reaction.reactionEmote.name == configuration[event.guild.idLong]?.bookmarkReaction) {
-            statsService.bookmarkAdded(event)
-            event.channel.retrieveMessageById(event.messageId).queue { it ->
-                event.user.openPrivateChannel().queue{ channel ->
-                    channel.sendMessage(buildSavedMessageEmbed(it.author, it, event.channel, event.guild)).queue{ message ->
-                        message.addReaction("❌").queue()
-                    }
-                }
-            }
+fun onGuildMessageReactionAddEvent(configuration: Configuration, statsService: StatisticsService) = listeners {
+    on<ReactionAddEvent> {
+        val guild = guild?.asGuildOrNull() ?: return@on
+        if (!configuration[guild.id.longValue]?.enabled!!) return@on
+        if (this.emoji.name == configuration[guild.id.longValue]?.bookmarkReaction) {
+            statsService.bookmarkAdded(this)
+            this.user.sendPrivateMessage {
+                buildSavedMessageEmbed(getUser(), message.asMessage(), guild)
+            }.addReaction(Emojis.x)
         }
     }
 
-    @Subscribe
-    fun onPrivateMessageReactionAddEvent(event: PrivateMessageReactionAddEvent) {
-        if (event.user!!.isBot) return
-        if (event.reactionEmote.name == "❌") {
-            event.channel.retrieveMessageById(event.messageId).queue{ it.delete().queue() }
+    on<ReactionAddEvent> {
+        if (this.getGuild() == null && this.emoji.name == "❌" && !this.user.isSelf()) {
+            this.message.delete()
         }
     }
+
 }
+

@@ -1,10 +1,11 @@
 package me.ddivad.keeper.services
 
+import com.gitlab.kordlib.core.event.message.ReactionAddEvent
 import me.jakejmattson.discordkt.api.annotations.Service
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.utilities.timeToString
 import me.jakejmattson.discordkt.api.Discord
-import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent
+import me.jakejmattson.discordkt.api.extensions.toTimeString
 import java.util.*
 
 @Service
@@ -17,16 +18,18 @@ class StatisticsService(private val configuration: Configuration, private val di
             _totalBookmarks = value
         }
 
-    fun bookmarkAdded(event: GuildMessageReactionAddEvent) {
-        totalBookmarks++
-        configuration.totalBookmarks++
-        configuration[event.guild.idLong]!!.bookmarkCount++
-        configuration.save()
+    suspend fun bookmarkAdded(event: ReactionAddEvent) {
+        event.getGuild()?.let {
+            totalBookmarks++
+            configuration.totalBookmarks++
+            configuration[it.id.longValue]!!.bookmarkCount++
+            configuration.save()
+        }
     }
 
     val uptime: String
-        get() = timeToString(Date().time - startTime.time)
+        get() = ((Date().time - startTime.time) / 1000).toTimeString()
 
     val ping: String
-        get() = "${discord.jda.gatewayPing} ms"
+        get() = "${discord.api.gateway.averagePing}"
 }

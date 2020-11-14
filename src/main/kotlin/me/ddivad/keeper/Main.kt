@@ -1,84 +1,80 @@
 package me.ddivad.keeper
 
-import com.google.gson.Gson
+import com.gitlab.kordlib.common.entity.Snowflake
+import com.gitlab.kordlib.gateway.Intent
+import com.gitlab.kordlib.gateway.PrivilegedIntent
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.extensions.requiredPermissionLevel
 import me.ddivad.keeper.services.PermissionsService
 import me.ddivad.keeper.services.StatisticsService
 import me.jakejmattson.discordkt.api.dsl.bot
-import me.jakejmattson.discordkt.api.extensions.jda.fullName
-import me.jakejmattson.discordkt.api.extensions.jda.profileLink
-import me.jakejmattson.discordkt.api.extensions.jda.toMember
+import me.jakejmattson.discordkt.api.extensions.addField
+import me.jakejmattson.discordkt.api.extensions.addInlineField
+import me.jakejmattson.discordkt.api.extensions.profileLink
+import me.jakejmattson.discordkt.api.extensions.toSnowflake
 import java.awt.Color
-import java.util.*
 
-data class Properties(val author: String, val version: String, val discordKt: String, val repository: String)
-
-val startTime = Date()
-
-fun main(args: Array<String>) {
+@PrivilegedIntent
+suspend fun main(args: Array<String>) {
     val token = System.getenv("BOT_TOKEN") ?: null
-    val prefix = System.getenv("DEFAULT_PREFIX") ?: "<none>"
+    val defaultPrefix = System.getenv("DEFAULT_PREFIX") ?: "<none>"
     require(token != null) { "Expected the bot token as an environment variable" }
 
     bot(token) {
-        configure {
-            val (configuration, permissionsService, statsService: StatisticsService)
-                    = it.getInjectionObjects(Configuration::class, PermissionsService::class, StatisticsService::class)
+        prefix {
+            val configuration = discord.getInjectionObjects(Configuration::class)
 
+            guild?.let { configuration[guild!!.id.longValue]?.prefix } ?: defaultPrefix
+        }
+        configure {
             commandReaction = null
             allowMentionPrefix = true
-
-            prefix {
-                it.guild?.let { configuration[it.idLong]?.prefix } ?: prefix
-            }
-
-            colors {
-                infoColor = Color(0x00BFFF)
-            }
-
-            mentionEmbed {
-                    val guild = it.guild ?: return@mentionEmbed
-                    val jda = it.discord.jda
-                    val prefix = it.relevantPrefix
-                    val role = configuration[guild.idLong]?.getLiveRole(jda)?.takeUnless { it == guild.publicRole }?.asMention
-                            ?: ""
-
-                    author {
-                        jda.retrieveUserById(394484823944593409).queue { user ->
-                            iconUrl = user.effectiveAvatarUrl
-                            name = user.fullName()
-                            url = user.profileLink
-                        }
-                    }
-
-                    simpleTitle = "Keeper"
-                    thumbnail = jda.selfUser.effectiveAvatarUrl
-                    color = infoColor
-                    description = "A bot for saving useful messages to a DM by reacting to them."
-                    addInlineField("Required role", role)
-                    addInlineField("Prefix", prefix)
-                    addField("Config Info", "```" +
-                            "Enabled: ${configuration[it.guild!!.idLong]?.enabled}\n" +
-                            "Reaction: ${configuration[it.guild!!.idLong]?.bookmarkReaction}\n" +
-                            "```")
-                    addField("Bot Info", "```" +
-                            "Version: 1.2.0\n" +
-                            "DiscordKt: 0.19.0\n" +
-                            "Kotlin: ${KotlinVersion.CURRENT}\n" +
-                            "Uptime: ${statsService.uptime}" +
-                            "```")
-                    addInlineField("Source", "http://github.com/ddivad195/keeper")
-                }
-
-
-            visibilityPredicate {
-                val guild = it.guild ?: return@visibilityPredicate false
-                val member = it.user.toMember(guild)!!
-                val permission = it.command.requiredPermissionLevel
-
-                permissionsService.hasClearance(guild, it.user, permission)
-            }
+            theme = Color(0x00BFFF)
         }
+
+        mentionEmbed {
+            val (configuration, statsService) = it.discord.getInjectionObjects(Configuration::class, StatisticsService::class)
+            val guild = it.guild ?: return@mentionEmbed
+            val guildConfiguration = configuration[it.guild!!.id.longValue] ?: return@mentionEmbed
+            val self = it.channel.kord.getSelf()
+            val liveRole = guild.getRole(guildConfiguration.requiredRoleId.toSnowflake())
+            author {
+                val user = guild.kord.getUser(Snowflake(394484823944593409))
+                icon = user?.avatar?.url
+                name = user?.username
+                url = user?.profileLink
+            }
+
+            title = "Keeper"
+            thumbnail {
+                url = self.avatar.url
+            }
+            color = it.discord.configuration.theme
+            description = "A bot for saving useful messages to a DM by reacting to them."
+            addInlineField("Required role", liveRole.mention)
+            addInlineField("Prefix", it.prefix())
+            addField("Config Info", "```" +
+                    "Enabled: ${guildConfiguration.enabled}\n" +
+                    "Reaction: ${guildConfiguration.bookmarkReaction}\n" +
+                    "```")
+            addField("Bot Info", "```" +
+                    "Version: 1.3.0\n" +
+                    "DiscordKt: 0.19.0\n" +
+                    "Kotlin: ${KotlinVersion.CURRENT}\n" +
+                    "```")
+            addField("Uptime", statsService.uptime)
+            addField("Source", "http://github.com/ddivad195/keeper")
+        }
+
+
+        permissions {
+            val requiredPermissionLevel = command.requiredPermissionLevel
+            val guild = guild ?: return@permissions false
+            val member = user.asMember(guild.id)
+
+            val permissionsService = discord.getInjectionObjects(PermissionsService::class)
+            return@permissions permissionsService.hasClearance(member, requiredPermissionLevel)
+        }
+
     }
 }
