@@ -8,6 +8,7 @@ import com.gitlab.kordlib.rest.builder.message.EmbedBuilder
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.extensions.jumpLink
 import me.ddivad.keeper.services.StatisticsService
+import me.ddivad.keeper.utilities.formatDate
 import me.jakejmattson.discordkt.api.extensions.addField
 import java.awt.Color
 
@@ -23,7 +24,7 @@ fun EmbedBuilder.buildSavedMessageEmbed(message: Message, guild: Guild) {
     addField("", "[View Original](${message.jumpLink(guild.id.value)})")
     footer {
         icon = guild.getIconUrl(Image.Format.PNG) ?: ""
-        text = guild.name
+        text = "${guild.name}  •  ${formatDate(message.timestamp)}"
     }
 }
 
