@@ -37,5 +37,5 @@ tasks {
 
 object Versions {
     const val BOT = "1.2.0"
-    const val DISCORDKT = "0.22.0-SNAPSHOT"
+    const val DISCORDKT = "0.21.3"
 }

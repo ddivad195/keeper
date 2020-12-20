@@ -2,6 +2,7 @@ package me.ddivad.keeper
 
 import com.gitlab.kordlib.common.entity.Snowflake
 import com.gitlab.kordlib.gateway.Intent
+import com.gitlab.kordlib.gateway.Intents
 import com.gitlab.kordlib.gateway.PrivilegedIntent
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.extensions.requiredPermissionLevel
@@ -64,6 +65,13 @@ suspend fun main(args: Array<String>) {
                     "```")
             addField("Uptime", statsService.uptime)
             addField("Source", "http://github.com/ddivad195/keeper")
+        }
+
+        intents {
+            Intents.nonPrivileged.intents.forEach {
+                +it
+            }
+            +Intent.GuildMembers
         }
 
 
