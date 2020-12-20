@@ -60,7 +60,7 @@ suspend fun main(args: Array<String>) {
                     "```")
             addField("Bot Info", "```" +
                     "Version: 1.3.2\n" +
-                    "DiscordKt: 0.22.0-SNAPSHOT\n" +
+                    "DiscordKt: ${it.discord.versions.library}\n" +
                     "Kotlin: ${KotlinVersion.CURRENT}\n" +
                     "```")
             addField("Uptime", statsService.uptime)
