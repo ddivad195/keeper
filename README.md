@@ -8,7 +8,7 @@ When the bot is enabled, reacting to a message with the specified reaction will 
 All available commands can be seen [here](./commands.md).
 
 ## Usage
-Since this bot has a docker-compose file, all you need to start your own taboo locally is:
+Since this bot has a docker-compose file, all you need to start your own Keeper instance is:
 
 ```
 $ cp .env.example .env
