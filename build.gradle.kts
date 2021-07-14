@@ -1,17 +1,14 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 group = "me.ddivad"
 version = Versions.BOT
 description = "A bot for saving useful messages to a DM by reacting to them."
 
 plugins {
-    kotlin("jvm") version "1.4.10"
-    id("com.github.johnrengelman.shadow") version "6.0.0"
+    kotlin("jvm") version "1.5.10"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 repositories {
     mavenCentral()
-    jcenter()
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
 }
 
@@ -20,7 +17,7 @@ dependencies {
 }
 
 tasks {
-    withType<KotlinCompile> {
+    compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
 
@@ -37,5 +34,5 @@ tasks {
 
 object Versions {
     const val BOT = "1.2.0"
-    const val DISCORDKT = "0.21.3"
+    const val DISCORDKT = "0.22.0-SNAPSHOT"
 }
