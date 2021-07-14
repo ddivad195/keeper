@@ -1,15 +1,14 @@
 package me.ddivad.keeper.commands
 
-import me.ddivad.keeper.dataclasses.Configuration
-import me.ddivad.keeper.extensions.requiredPermissionLevel
-import me.ddivad.keeper.services.Permission
+import me.ddivad.keeper.dataclasses.Permissions
 import me.jakejmattson.discordkt.api.arguments.MessageArg
 import me.jakejmattson.discordkt.api.dsl.commands
 
-fun generalCommands(configuration: Configuration) = commands("General") {
+@Suppress("unused")
+fun generalCommands() = commands("General") {
     dmCommand("delete") {
         description = "Delete a Keeper bookmark by ID inside of DM channel"
-        requiredPermissionLevel = Permission.USER
+        requiredPermission = Permissions.NONE
         execute(MessageArg) {
             val message = args.first
 

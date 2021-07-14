@@ -1,9 +1,8 @@
 package me.ddivad.keeper.services
 
-import com.gitlab.kordlib.core.event.message.ReactionAddEvent
+import dev.kord.core.event.message.ReactionAddEvent
 import me.jakejmattson.discordkt.api.annotations.Service
 import me.ddivad.keeper.dataclasses.Configuration
-import me.ddivad.keeper.utilities.timeToString
 import me.jakejmattson.discordkt.api.Discord
 import me.jakejmattson.discordkt.api.extensions.toTimeString
 import java.util.*
@@ -22,7 +21,7 @@ class StatisticsService(private val configuration: Configuration, private val di
         event.getGuild()?.let {
             totalBookmarks++
             configuration.totalBookmarks++
-            configuration[it.id.longValue]!!.bookmarkCount++
+            configuration[it.id.value]!!.bookmarkCount++
             configuration.save()
         }
     }
@@ -31,5 +30,5 @@ class StatisticsService(private val configuration: Configuration, private val di
         get() = ((Date().time - startTime.time) / 1000).toTimeString()
 
     val ping: String
-        get() = "${discord.api.gateway.averagePing}"
+        get() = "${discord.kord.gateway.averagePing}"
 }

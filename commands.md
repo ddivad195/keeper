@@ -3,7 +3,7 @@
 ## Key 
 | Symbol      | Meaning                        |
 | ----------- | ------------------------------ |
-| (Argument)  | Argument is not required.      |
+| [Argument]  | Argument is not required.      |
 
 ## Configuration
 | Commands    | Arguments | Description                                                |
@@ -28,5 +28,5 @@
 ## Utility
 | Commands | Arguments | Description          |
 | -------- | --------- | -------------------- |
-| Help     | (Command) | Display a help menu. |
+| Help     | [Command] | Display a help menu. |
 
