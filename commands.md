@@ -19,11 +19,11 @@
 | delete   | Message   | Delete a Keeper bookmark by ID inside of DM channel |
 
 ## Operation
-| Commands | Arguments | Description                    |
-| -------- | --------- | ------------------------------ |
-| disable  |           | Enable the bot's functionality |
-| enable   |           | Enable the bot's functionality |
-| stats    |           | View statistics about Keeper   |
+| Commands | Arguments | Description                  |
+| -------- | --------- | ---------------------------- |
+| disable  |           | Disabled the bot reactions   |
+| enable   |           | Enable the bot reactions     |
+| stats    |           | View statistics about Keeper |
 
 ## Utility
 | Commands | Arguments | Description          |
