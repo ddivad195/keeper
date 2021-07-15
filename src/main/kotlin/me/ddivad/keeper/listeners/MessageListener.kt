@@ -13,21 +13,20 @@ import me.jakejmattson.discordkt.api.extensions.sendPrivateMessage
 @Suppress("unused")
 fun onGuildMessageReactionAddEvent(configuration: Configuration, statsService: StatisticsService) = listeners {
     on<ReactionAddEvent> {
-        val guild = guild?.asGuildOrNull() ?: return@on
-        if (!configuration[guild.id.value]?.enabled!!) return@on
-        if (this.emoji.name == configuration[guild.id.value]?.bookmarkReaction) {
-            statsService.bookmarkAdded(this)
-            this.user.sendPrivateMessage {
-                buildSavedMessageEmbed(message.asMessage(), guild)
-            }.addReaction(Emojis.x)
+        if (guild !== null) {
+            val guild = guild?.asGuildOrNull() ?: return@on
+            if (!configuration[guild.id.value]?.enabled!!) return@on
+            if (this.emoji.name == configuration[guild.id.value]?.bookmarkReaction) {
+                statsService.bookmarkAdded(this)
+                this.user.sendPrivateMessage {
+                    buildSavedMessageEmbed(message.asMessage(), guild)
+                }.addReaction(Emojis.x)
+            }
+        } else {
+            if (this.emoji.name == "❌" && !this.user.isSelf()) {
+                this.message.delete()
+            }
         }
     }
-
-    on<ReactionAddEvent> {
-        if (this.getGuild() == null && this.emoji.name == "❌" && !this.user.isSelf()) {
-            this.message.delete()
-        }
-    }
-
 }
 
