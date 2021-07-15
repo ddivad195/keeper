@@ -7,6 +7,7 @@ import dev.kord.core.supplier.EntitySupplyStrategy
 import dev.kord.gateway.PrivilegedIntent
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.dataclasses.Permissions
+import me.ddivad.keeper.services.CacheService
 import me.ddivad.keeper.services.StatisticsService
 import me.jakejmattson.discordkt.api.dsl.bot
 import me.jakejmattson.discordkt.api.extensions.addField
@@ -32,7 +33,7 @@ suspend fun main() {
             commandReaction = null
             allowMentionPrefix = true
             theme = Color(0x00BFFF)
-            entitySupplyStrategy = EntitySupplyStrategy.cacheWithRestFallback
+            entitySupplyStrategy = EntitySupplyStrategy.cacheWithCachingRestFallback
             permissions(Permissions.STAFF)
         }
 
@@ -69,6 +70,15 @@ suspend fun main() {
                     "```")
             addField("Uptime", statsService.uptime)
             addField("Source", "http://github.com/ddivad195/keeper")
+        }
+
+        onStart {
+            val cacheService = this.getInjectionObjects(CacheService::class)
+            try {
+                cacheService.run()
+            } catch (ex: Exception) {
+                println(ex.message)
+            }
         }
     }
 }
