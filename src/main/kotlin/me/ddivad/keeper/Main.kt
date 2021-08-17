@@ -4,6 +4,8 @@ import dev.kord.common.annotation.KordPreview
 import dev.kord.common.entity.Snowflake
 import dev.kord.common.kColor
 import dev.kord.core.supplier.EntitySupplyStrategy
+import dev.kord.gateway.Intent
+import dev.kord.gateway.Intents
 import dev.kord.gateway.PrivilegedIntent
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.dataclasses.Permissions
@@ -34,6 +36,10 @@ suspend fun main() {
             allowMentionPrefix = true
             theme = Color(0x00BFFF)
             entitySupplyStrategy = EntitySupplyStrategy.cacheWithCachingRestFallback
+            intents = Intents(
+                Intent.GuildMessageReactions,
+                Intent.DirectMessagesReactions
+            )
             permissions(Permissions.STAFF)
         }
 

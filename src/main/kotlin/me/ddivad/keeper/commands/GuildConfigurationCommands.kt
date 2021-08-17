@@ -4,7 +4,7 @@ import me.ddivad.keeper.conversations.ConfigurationConversation
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.dataclasses.Permissions
 import me.jakejmattson.discordkt.api.arguments.*
-import me.jakejmattson.discordkt.api.dsl.commands
+import me.jakejmattson.discordkt.api.commands.commands
 
 @Suppress("unused")
 fun guildConfigurationCommands(configuration: Configuration) = commands("Configuration", Permissions.STAFF) {

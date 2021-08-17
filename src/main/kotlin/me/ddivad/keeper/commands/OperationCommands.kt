@@ -4,7 +4,7 @@ import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.dataclasses.Permissions
 import me.ddivad.keeper.services.StatisticsService
 import me.ddivad.keeper.embeds.buildStatsEmbed
-import me.jakejmattson.discordkt.api.dsl.commands
+import me.jakejmattson.discordkt.api.commands.commands
 
 @Suppress("unused")
 fun operationCommands(configuration: Configuration, statsService: StatisticsService) = commands("Operation", Permissions.STAFF) {

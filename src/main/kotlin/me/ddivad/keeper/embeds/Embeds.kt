@@ -1,8 +1,10 @@
 package me.ddivad.keeper.embeds
 
+import dev.kord.common.entity.ChannelType
 import dev.kord.common.kColor
 import dev.kord.core.entity.Guild
 import dev.kord.core.entity.Message
+import dev.kord.core.entity.channel.thread.ThreadChannel
 import dev.kord.rest.Image
 import dev.kord.rest.builder.message.EmbedBuilder
 import kotlinx.datetime.toJavaInstant
@@ -14,12 +16,19 @@ import me.jakejmattson.discordkt.api.extensions.jumpLink
 import java.awt.Color
 
 suspend fun EmbedBuilder.buildSavedMessageEmbed(message: Message, guild: Guild) {
+    val channel = message.getChannel()
+    val isThread = channel.type in setOf(ChannelType.PublicGuildThread, ChannelType.PrivateThread)
+
     color = Color(0x00BFFF).kColor
     author {
         name = message.author?.tag
         icon = message.author?.avatar?.url
     }
-    description = "**Saved from **${message.channel.mention}\n\n${message.content}"
+    description =
+        "**Saved from **" +
+            "${channel.mention} ${if(isThread) "(${(channel as? ThreadChannel)?.parent?.mention})" else ""}" +
+            "\n\n${message.content}"
+    
     if (message.attachments.isNotEmpty()) image = message.attachments.first().url
 
     addField("", "[View Original](${message.jumpLink()})")
