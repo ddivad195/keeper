@@ -69,7 +69,7 @@ suspend fun main() {
                     "Reaction: ${guildConfiguration.bookmarkReaction}\n" +
                     "```")
             addField("Bot Info", "```" +
-                    "Version: 1.4.1\n" +
+                    "Version: 1.5.0\n" +
                     "DiscordKt: ${it.discord.versions.library}\n" +
                     "Kord: ${it.discord.versions.kord}\n" +
                     "Kotlin: ${KotlinVersion.CURRENT}\n" +

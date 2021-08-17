@@ -28,7 +28,7 @@ suspend fun EmbedBuilder.buildSavedMessageEmbed(message: Message, guild: Guild) 
         "**Saved from **" +
             "${channel.mention} ${if(isThread) "(${(channel as? ThreadChannel)?.parent?.mention})" else ""}" +
             "\n\n${message.content}"
-    
+
     if (message.attachments.isNotEmpty()) image = message.attachments.first().url
 
     addField("", "[View Original](${message.jumpLink()})")
