@@ -2,7 +2,7 @@ package me.ddivad.keeper.commands
 
 import me.ddivad.keeper.dataclasses.Permissions
 import me.jakejmattson.discordkt.api.arguments.MessageArg
-import me.jakejmattson.discordkt.api.dsl.commands
+import me.jakejmattson.discordkt.api.commands.commands
 
 @Suppress("unused")
 fun generalCommands() = commands("General") {

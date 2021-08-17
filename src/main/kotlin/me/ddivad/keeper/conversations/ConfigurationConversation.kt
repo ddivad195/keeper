@@ -9,9 +9,9 @@ import me.jakejmattson.discordkt.api.conversations.conversation
 
 class ConfigurationConversation(private val configuration: Configuration) {
     fun createConfigurationConversation(guild: Guild) = conversation {
-        val prefix = promptMessage(EveryArg, "Bot prefix:")
-        val role = promptMessage(RoleArg, "Admin role:")
-        val reaction = promptMessage(UnicodeEmojiArg, "Save message reaction:")
+        val prefix = prompt(EveryArg, "Bot prefix:")
+        val role = prompt(RoleArg, "Admin role:")
+        val reaction = prompt(UnicodeEmojiArg, "Save message reaction:")
 
         configuration.setup(guild, prefix, role, reaction.unicode)
     }
