@@ -1,5 +1,6 @@
 package me.ddivad.keeper.services
 
+import dev.kord.core.entity.Guild
 import dev.kord.core.event.message.ReactionAddEvent
 import me.jakejmattson.discordkt.api.annotations.Service
 import me.ddivad.keeper.dataclasses.Configuration
@@ -17,13 +18,11 @@ class StatisticsService(private val configuration: Configuration, private val di
             _totalBookmarks = value
         }
 
-    suspend fun bookmarkAdded(event: ReactionAddEvent) {
-        event.getGuild()?.let {
-            totalBookmarks++
-            configuration.totalBookmarks++
-            configuration[it.id.value]!!.bookmarkCount++
-            configuration.save()
-        }
+    suspend fun bookmarkAdded(guild: Guild) {
+        totalBookmarks++
+        configuration.totalBookmarks++
+        configuration[guild.id.value]!!.bookmarkCount++
+        configuration.save()
     }
 
     val uptime: String
