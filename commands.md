@@ -16,6 +16,7 @@
 ## General
 | Commands | Arguments | Description                                         |
 | -------- | --------- | --------------------------------------------------- |
+| bookmark | Message   | Bookmark a message using Keeper                     |
 | delete   | Message   | Delete a Keeper bookmark by ID inside of DM channel |
 
 ## Operation

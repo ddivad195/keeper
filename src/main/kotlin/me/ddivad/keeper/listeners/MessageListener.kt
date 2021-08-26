@@ -17,7 +17,7 @@ fun onGuildMessageReactionAddEvent(configuration: Configuration, statsService: S
             val guild = guild?.asGuildOrNull() ?: return@on
             if (!configuration[guild.id.value]?.enabled!!) return@on
             if (this.emoji.name == configuration[guild.id.value]?.bookmarkReaction) {
-                statsService.bookmarkAdded(this)
+                statsService.bookmarkAdded(guild)
                 this.user.sendPrivateMessage {
                     buildSavedMessageEmbed(message.asMessage(), guild)
                 }.addReaction(Emojis.x)
