@@ -8,7 +8,7 @@ import me.jakejmattson.discordkt.api.commands.commands
 
 @Suppress("unused")
 fun operationCommands(configuration: Configuration, statsService: StatisticsService) = commands("Operation", Permissions.STAFF) {
-    guildCommand("enable") {
+    command("enable") {
         description = "Enable the bot reactions"
         execute {
             if (!configuration.hasGuildConfig(guild.id.value)) {
@@ -21,7 +21,7 @@ fun operationCommands(configuration: Configuration, statsService: StatisticsServ
         }
     }
 
-    guildCommand("disable") {
+    command("disable") {
         description = "Disabled the bot reactions"
         execute {
             if (!configuration.hasGuildConfig(guild.id.value)) {
@@ -34,7 +34,7 @@ fun operationCommands(configuration: Configuration, statsService: StatisticsServ
         }
     }
 
-    guildCommand("stats") {
+    command("stats") {
         description = "View statistics about Keeper"
         execute {
             respond {
