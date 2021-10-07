@@ -8,7 +8,7 @@ import me.jakejmattson.discordkt.api.commands.commands
 
 @Suppress("unused")
 fun guildConfigurationCommands(configuration: Configuration) = commands("Configuration", Permissions.STAFF) {
-    guildCommand("configure") {
+    command("configure") {
         description = "Configure a guild to use Keeper."
         execute {
             if (configuration.hasGuildConfig(guild.id.value)) {
@@ -22,7 +22,7 @@ fun guildConfigurationCommands(configuration: Configuration) = commands("Configu
         }
     }
 
-    guildCommand("setPrefix") {
+    command("setPrefix") {
         description = "Set the prefix required for the bot to register a command."
         execute(AnyArg("Prefix")) {
             if (!configuration.hasGuildConfig(guild.id.value)) {
@@ -37,7 +37,7 @@ fun guildConfigurationCommands(configuration: Configuration) = commands("Configu
         }
     }
 
-    guildCommand("setRole") {
+    command("setRole") {
         description = "Set the role required to use this bot."
         execute(RoleArg) {
             if (!configuration.hasGuildConfig(guild.id.value)) {
@@ -52,7 +52,7 @@ fun guildConfigurationCommands(configuration: Configuration) = commands("Configu
         }
 
 
-        guildCommand("setReaction") {
+        command("setReaction") {
             description = "Set the reaction used to save messages"
             execute(UnicodeEmojiArg) {
                 if (!configuration.hasGuildConfig(guild.id.value)) {

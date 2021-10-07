@@ -26,11 +26,12 @@ suspend fun main() {
     require(token != null) { "Expected the bot token as an environment variable" }
 
     bot(token) {
-        prefix {
-            val configuration = discord.getInjectionObjects(Configuration::class)
+        val configuration = data("config/config.json") { Configuration() }
 
+        prefix {
             guild?.let { configuration[guild!!.id.value]?.prefix } ?: defaultPrefix
         }
+
         configure {
             commandReaction = null
             allowMentionPrefix = true
@@ -60,7 +61,7 @@ suspend fun main() {
             thumbnail {
                 url = self.avatar.url
             }
-            color = it.discord.configuration.theme?.kColor
+            color = it.discord.configuration.theme
             description = "A bot for saving useful messages to a DM by reacting to them."
             addInlineField("Required role", liveRole.mention)
             addInlineField("Prefix", it.prefix())
@@ -69,7 +70,7 @@ suspend fun main() {
                     "Reaction: ${guildConfiguration.bookmarkReaction}\n" +
                     "```")
             addField("Bot Info", "```" +
-                    "Version: 1.6.0\n" +
+                    "Version: 1.6.1\n" +
                     "DiscordKt: ${it.discord.versions.library}\n" +
                     "Kord: ${it.discord.versions.kord}\n" +
                     "Kotlin: ${KotlinVersion.CURRENT}\n" +

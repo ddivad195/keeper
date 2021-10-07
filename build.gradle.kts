@@ -3,7 +3,8 @@ version = Versions.BOT
 description = "A bot for saving useful messages to a DM by reacting to them."
 
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.5.31"
+    kotlin("plugin.serialization") version "1.5.31"
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
