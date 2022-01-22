@@ -1,12 +1,12 @@
 package me.ddivad.keeper.services
 
 import dev.kord.core.entity.Guild
-import dev.kord.core.event.message.ReactionAddEvent
-import me.jakejmattson.discordkt.api.annotations.Service
+import me.jakejmattson.discordkt.annotations.Service
 import me.ddivad.keeper.dataclasses.Configuration
-import me.jakejmattson.discordkt.api.Discord
-import me.jakejmattson.discordkt.api.extensions.toTimeString
+import me.jakejmattson.discordkt.Discord
+import me.jakejmattson.discordkt.extensions.toTimeString
 import java.util.*
+import kotlin.time.ExperimentalTime
 
 @Service
 class StatisticsService(private val configuration: Configuration, private val discord: Discord) {
@@ -18,16 +18,17 @@ class StatisticsService(private val configuration: Configuration, private val di
             _totalBookmarks = value
         }
 
-    suspend fun bookmarkAdded(guild: Guild) {
+    fun bookmarkAdded(guild: Guild) {
         totalBookmarks++
         configuration.totalBookmarks++
-        configuration[guild.id.value]!!.bookmarkCount++
+        configuration[guild.id]!!.bookmarkCount++
         configuration.save()
     }
 
     val uptime: String
         get() = ((Date().time - startTime.time) / 1000).toTimeString()
 
+    @OptIn(ExperimentalTime::class)
     val ping: String
         get() = "${discord.kord.gateway.averagePing}"
 }

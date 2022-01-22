@@ -4,40 +4,40 @@ import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.dataclasses.Permissions
 import me.ddivad.keeper.services.StatisticsService
 import me.ddivad.keeper.embeds.buildStatsEmbed
-import me.jakejmattson.discordkt.api.commands.commands
+import me.jakejmattson.discordkt.commands.commands
 
 @Suppress("unused")
 fun operationCommands(configuration: Configuration, statsService: StatisticsService) = commands("Operation", Permissions.STAFF) {
-    command("enable") {
+    slash("enable") {
         description = "Enable the bot reactions"
         execute {
-            if (!configuration.hasGuildConfig(guild.id.value)) {
+            if (!configuration.hasGuildConfig(guild.id)) {
                 respond("Guild configuration exists. To modify it use the commands to set values.")
                 return@execute
             }
-            configuration[guild.id.value]?.enabled = true
+            configuration[guild.id]?.enabled = true
             configuration.save()
-            respond("Bot enabled")
+            respond("Bot enabled", false)
         }
     }
 
-    command("disable") {
+    slash("disable") {
         description = "Disabled the bot reactions"
         execute {
-            if (!configuration.hasGuildConfig(guild.id.value)) {
+            if (!configuration.hasGuildConfig(guild.id)) {
                 respond("Guild configuration exists. To modify it use the commands to set values.")
                 return@execute
             }
-            configuration[guild.id.value]?.enabled = false
+            configuration[guild.id]?.enabled = false
             configuration.save()
-            respond("Bot disabled")
+            respond("Bot disabled", false)
         }
     }
 
-    command("stats") {
+    slash("stats") {
         description = "View statistics about Keeper"
         execute {
-            respond {
+            respond(false) {
                 buildStatsEmbed(guild, configuration, statsService)
             }
         }
