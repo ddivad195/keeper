@@ -6,17 +6,19 @@ import dev.kord.x.emoji.addReaction
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.services.StatisticsService
 import me.ddivad.keeper.embeds.buildSavedMessageEmbed
-import me.jakejmattson.discordkt.api.dsl.listeners
-import me.jakejmattson.discordkt.api.extensions.isSelf
-import me.jakejmattson.discordkt.api.extensions.sendPrivateMessage
+import me.jakejmattson.discordkt.dsl.listeners
+import me.jakejmattson.discordkt.extensions.isSelf
+import me.jakejmattson.discordkt.extensions.sendPrivateMessage
 
 @Suppress("unused")
 fun onGuildMessageReactionAddEvent(configuration: Configuration, statsService: StatisticsService) = listeners {
     on<ReactionAddEvent> {
         if (guild !== null) {
             val guild = guild?.asGuildOrNull() ?: return@on
-            if (!configuration[guild.id.value]?.enabled!!) return@on
-            if (this.emoji.name == configuration[guild.id.value]?.bookmarkReaction) {
+            val guildConfiguration = configuration[guild.id] ?: return@on
+            if (!guildConfiguration.enabled) return@on
+
+            if (this.emoji.name == configuration[guild.id]?.bookmarkReaction) {
                 statsService.bookmarkAdded(guild)
                 this.user.sendPrivateMessage {
                     buildSavedMessageEmbed(message.asMessage(), guild)

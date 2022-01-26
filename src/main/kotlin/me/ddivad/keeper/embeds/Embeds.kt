@@ -11,8 +11,8 @@ import kotlinx.datetime.toJavaInstant
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.services.StatisticsService
 import me.ddivad.keeper.utilities.formatDate
-import me.jakejmattson.discordkt.api.extensions.addField
-import me.jakejmattson.discordkt.api.extensions.jumpLink
+import me.jakejmattson.discordkt.extensions.addField
+import me.jakejmattson.discordkt.extensions.jumpLink
 import java.awt.Color
 
 suspend fun EmbedBuilder.buildSavedMessageEmbed(message: Message, guild: Guild) {
@@ -46,7 +46,7 @@ fun EmbedBuilder.buildStatsEmbed(guild: Guild, configuration: Configuration, sta
         value = """
                         ```
                         Total Bookmarks (global): ${String.format("%4d", configuration.totalBookmarks)}
-                        Total Bookmarks (guild):  ${String.format("%4d", configuration[guild.id.value]?.bookmarkCount)}
+                        Total Bookmarks (guild):  ${String.format("%4d", configuration[guild.id]?.bookmarkCount)}
                         Since Restart:            ${String.format("%4d", statsService.totalBookmarks)}
                         ```
                     """.trimIndent()

@@ -2,7 +2,6 @@ package me.ddivad.keeper
 
 import dev.kord.common.annotation.KordPreview
 import dev.kord.common.entity.Snowflake
-import dev.kord.common.kColor
 import dev.kord.core.supplier.EntitySupplyStrategy
 import dev.kord.gateway.Intent
 import dev.kord.gateway.Intents
@@ -11,11 +10,8 @@ import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.dataclasses.Permissions
 import me.ddivad.keeper.services.CacheService
 import me.ddivad.keeper.services.StatisticsService
-import me.jakejmattson.discordkt.api.dsl.bot
-import me.jakejmattson.discordkt.api.extensions.addField
-import me.jakejmattson.discordkt.api.extensions.addInlineField
-import me.jakejmattson.discordkt.api.extensions.profileLink
-import me.jakejmattson.discordkt.api.extensions.toSnowflake
+import me.jakejmattson.discordkt.dsl.bot
+import me.jakejmattson.discordkt.extensions.*
 import java.awt.Color
 
 @KordPreview
@@ -29,7 +25,7 @@ suspend fun main() {
         val configuration = data("config/config.json") { Configuration() }
 
         prefix {
-            guild?.let { configuration[guild!!.id.value]?.prefix } ?: defaultPrefix
+            guild?.let { configuration[guild!!.id]?.prefix } ?: defaultPrefix
         }
 
         configure {
@@ -41,15 +37,15 @@ suspend fun main() {
                 Intent.GuildMessageReactions,
                 Intent.DirectMessagesReactions
             )
-            permissions(Permissions.STAFF)
+            permissions = Permissions
         }
 
         mentionEmbed {
             val (configuration, statsService) = it.discord.getInjectionObjects(Configuration::class, StatisticsService::class)
             val guild = it.guild ?: return@mentionEmbed
-            val guildConfiguration = configuration[it.guild!!.id.value] ?: return@mentionEmbed
+            val guildConfiguration = configuration[it.guild!!.id] ?: return@mentionEmbed
             val self = it.channel.kord.getSelf()
-            val liveRole = guild.getRole(guildConfiguration.requiredRoleId.toSnowflake())
+            val liveRole = guild.getRole(guildConfiguration.requiredRoleId)
             author {
                 val user = guild.kord.getUser(Snowflake(394484823944593409))
                 icon = user?.avatar?.url
@@ -59,7 +55,7 @@ suspend fun main() {
 
             title = "Keeper"
             thumbnail {
-                url = self.avatar.url
+                url = self.pfpUrl
             }
             color = it.discord.configuration.theme
             description = "A bot for saving useful messages to a DM by reacting to them."
@@ -70,7 +66,7 @@ suspend fun main() {
                     "Reaction: ${guildConfiguration.bookmarkReaction}\n" +
                     "```")
             addField("Bot Info", "```" +
-                    "Version: 1.6.1\n" +
+                    "Version: 1.7.0\n" +
                     "DiscordKt: ${it.discord.versions.library}\n" +
                     "Kord: ${it.discord.versions.kord}\n" +
                     "Kotlin: ${KotlinVersion.CURRENT}\n" +
