@@ -7,7 +7,6 @@ import dev.kord.gateway.Intent
 import dev.kord.gateway.Intents
 import dev.kord.gateway.PrivilegedIntent
 import me.ddivad.keeper.dataclasses.Configuration
-import me.ddivad.keeper.dataclasses.Permissions
 import me.ddivad.keeper.services.CacheService
 import me.ddivad.keeper.services.StatisticsService
 import me.jakejmattson.discordkt.dsl.bot
@@ -30,14 +29,13 @@ suspend fun main() {
 
         configure {
             commandReaction = null
-            allowMentionPrefix = true
+            mentionAsPrefix = true
             theme = Color(0x00BFFF)
             entitySupplyStrategy = EntitySupplyStrategy.cacheWithCachingRestFallback
             intents = Intents(
                 Intent.GuildMessageReactions,
                 Intent.DirectMessagesReactions
             )
-            permissions = Permissions
         }
 
         mentionEmbed {

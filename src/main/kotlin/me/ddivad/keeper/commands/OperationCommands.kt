@@ -17,7 +17,7 @@ fun operationCommands(configuration: Configuration, statsService: StatisticsServ
             }
             configuration[guild.id]?.enabled = true
             configuration.save()
-            respond("Bot enabled", false)
+            respondPublic("Bot enabled")
         }
     }
 
@@ -30,14 +30,14 @@ fun operationCommands(configuration: Configuration, statsService: StatisticsServ
             }
             configuration[guild.id]?.enabled = false
             configuration.save()
-            respond("Bot disabled", false)
+            respondPublic("Bot disabled")
         }
     }
 
     slash("stats") {
         description = "View statistics about Keeper"
         execute {
-            respond(false) {
+            respondPublic {
                 buildStatsEmbed(guild, configuration, statsService)
             }
         }
