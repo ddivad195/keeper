@@ -18,7 +18,7 @@ private val logger = KotlinLogging.logger { }
 fun generalCommands(configuration: Configuration, statsService: StatisticsService) = commands("General") {
     slash("bookmark", "Bookmark") {
         description = "Bookmark a message using Keeper"
-        requiredPermission = Permissions.NONE
+        requiredPermissions = Permissions.EVERYONE
         execute(MessageArg) {
             val guild = guild.asGuildOrNull()
             statsService.bookmarkAdded(guild)

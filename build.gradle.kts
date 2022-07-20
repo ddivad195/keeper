@@ -3,8 +3,8 @@ version = Versions.BOT
 description = "A bot for saving useful messages to a DM by reacting to them."
 
 plugins {
-    kotlin("jvm") version "1.5.31"
-    kotlin("plugin.serialization") version "1.5.31"
+    kotlin("jvm") version "1.7.10"
+    kotlin("plugin.serialization") version "1.7.10"
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation("me.jakejmattson:DiscordKt:${Versions.DISCORDKT}")
+    implementation("me.jakejmattson:DiscordKt:0.23.0-SNAPSHOT")
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.20")
 }
 
