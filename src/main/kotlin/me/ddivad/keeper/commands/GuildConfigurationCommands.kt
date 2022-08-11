@@ -9,7 +9,7 @@ import me.jakejmattson.discordkt.commands.commands
 fun guildConfigurationCommands(configuration: Configuration) = commands("Configuration", Permissions.STAFF) {
     slash("configure") {
         description = "Configure a guild to use Keeper."
-        execute(UnicodeEmojiArg) {
+        execute(UnicodeEmojiArg("Reaction", "The reaction that will be used to bookmark messages")) {
             if (configuration.hasGuildConfig(guild.id)) {
                 respond("Guild configuration already exists. To modify it use the commands to set values.")
                 return@execute
@@ -22,7 +22,7 @@ fun guildConfigurationCommands(configuration: Configuration) = commands("Configu
 
     slash("setReaction") {
         description = "Set the reaction used to save messages"
-        execute(UnicodeEmojiArg) {
+        execute(UnicodeEmojiArg("Reaction", "The reaction that will be used to bookmark messages")) {
             if (!configuration.hasGuildConfig(guild.id)) {
                 respond("Guild configuration does not exist. Run `/configure` first.")
                 return@execute

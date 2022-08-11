@@ -8,10 +8,10 @@
 ## Configuration
 | Commands    | Arguments | Description                            |
 |-------------|-----------|----------------------------------------|
-| configure   | Emoji     | Configure a guild to use Keeper.       |
+| configure   | Reaction  | Configure a guild to use Keeper.       |
 | disable     |           | Disable the bot reactions              |
 | enable      |           | Enable the bot reactions               |
-| setReaction | Emoji     | Set the reaction used to save messages |
+| setReaction | Reaction  | Set the reaction used to save messages |
 
 ## General
 | Commands | Arguments | Description                  |
