@@ -13,6 +13,7 @@ import me.ddivad.keeper.services.StatisticsService
 import me.ddivad.keeper.utilities.formatDate
 import me.jakejmattson.discordkt.extensions.addField
 import me.jakejmattson.discordkt.extensions.jumpLink
+import me.jakejmattson.discordkt.extensions.pfpUrl
 import java.awt.Color
 
 suspend fun EmbedBuilder.buildSavedMessageEmbed(message: Message, guild: Guild) {
@@ -38,9 +39,15 @@ suspend fun EmbedBuilder.buildSavedMessageEmbed(message: Message, guild: Guild) 
     }
 }
 
-fun EmbedBuilder.buildStatsEmbed(guild: Guild, configuration: Configuration, statsService: StatisticsService) {
-    title = "Stats"
+suspend fun EmbedBuilder.buildStatsEmbed(guild: Guild, configuration: Configuration, statsService: StatisticsService) {
+    title = "Bot Information"
     color = Color(0x00BFFF).kColor
+
+    addField("Config Info", "```" +
+            "Enabled: ${configuration[guild.id]?.enabled}\n" +
+            "Reaction: ${configuration[guild.id]?.bookmarkReaction}\n" +
+            "```")
+
     field {
         name = "Messages Bookmarked"
         value = """
