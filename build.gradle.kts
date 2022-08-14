@@ -1,7 +1,7 @@
 import java.util.*
 
 group = "me.ddivad"
-version = "1.9.0"
+version = "1.9.1"
 description = "A bot for saving useful messages to a DM by reacting to them."
 
 plugins {

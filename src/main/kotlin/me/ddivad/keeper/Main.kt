@@ -25,7 +25,7 @@ suspend fun main() {
             commandReaction = null
             mentionAsPrefix = true
             theme = Color(0x00BFFF)
-            entitySupplyStrategy = EntitySupplyStrategy.cacheWithCachingRestFallback
+            recommendCommands = false
             intents = Intents(
                 Intent.GuildMessageReactions,
                 Intent.DirectMessagesReactions
