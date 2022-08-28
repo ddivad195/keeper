@@ -13,7 +13,6 @@ import me.ddivad.keeper.services.StatisticsService
 import me.ddivad.keeper.utilities.formatDate
 import me.jakejmattson.discordkt.extensions.addField
 import me.jakejmattson.discordkt.extensions.jumpLink
-import me.jakejmattson.discordkt.extensions.pfpUrl
 import java.awt.Color
 
 suspend fun EmbedBuilder.buildSavedMessageEmbed(message: Message, guild: Guild) {
