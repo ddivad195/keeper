@@ -22,8 +22,6 @@ suspend fun main() {
         prefix { "/" }
 
         configure {
-            commandReaction = null
-            mentionAsPrefix = true
             theme = Color(0x00BFFF)
             recommendCommands = false
             intents = Intents(

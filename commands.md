@@ -14,13 +14,14 @@
 | setReaction | Reaction  | Set the reaction used to save messages |
 
 ## General
-| Commands | Arguments | Description                  |
-|----------|-----------|------------------------------|
-| bookmark | Message   | Bookmark this message        |
-| info     |           | View statistics about Keeper |
+| Commands | Arguments | Description            |
+|----------|-----------|------------------------|
+| bookmark | Message   | Bookmark this message  |
+| stats    |           | View Keeper statistics |
 
 ## Utility
 | Commands | Arguments | Description          |
 |----------|-----------|----------------------|
 | Help     | [Command] | Display a help menu. |
+| info     |           | Bot info for Keeper  |
 

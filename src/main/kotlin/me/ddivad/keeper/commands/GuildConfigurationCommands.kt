@@ -4,11 +4,11 @@ import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.dataclasses.Permissions
 import me.jakejmattson.discordkt.arguments.*
 import me.jakejmattson.discordkt.commands.commands
+import me.jakejmattson.discordkt.dsl.edit
 
 @Suppress("unused")
 fun guildConfigurationCommands(configuration: Configuration) = commands("Configuration", Permissions.STAFF) {
-    slash("configure") {
-        description = "Configure a guild to use Keeper."
+    slash("configure", "Configure a guild to use Keeper.") {
         execute(UnicodeEmojiArg("Reaction", "The reaction that will be used to bookmark messages")) {
             if (configuration.hasGuildConfig(guild.id)) {
                 respond("Guild configuration already exists. To modify it use the commands to set values.")
@@ -20,8 +20,7 @@ fun guildConfigurationCommands(configuration: Configuration) = commands("Configu
         }
     }
 
-    slash("setReaction") {
-        description = "Set the reaction used to save messages"
+    slash("setReaction", "Set the reaction used to save messages") {
         execute(UnicodeEmojiArg("Reaction", "The reaction that will be used to bookmark messages")) {
             if (!configuration.hasGuildConfig(guild.id)) {
                 respond("Guild configuration does not exist. Run `/configure` first.")
@@ -29,34 +28,29 @@ fun guildConfigurationCommands(configuration: Configuration) = commands("Configu
             }
 
             val reaction = args.first
-            configuration[guild.id]?.bookmarkReaction = reaction.unicode
-            configuration.save()
+            configuration.edit { guildConfigurations[guild.id]?.bookmarkReaction = reaction.unicode }
             respondPublic("Reaction set to: $reaction")
         }
     }
 
-    slash("enable") {
-        description = "Enable the bot reactions"
+    slash("enable", "Enable the bot reactions") {
         execute {
             if (!configuration.hasGuildConfig(guild.id)) {
                 respond("Guild configuration does not exist. Run `/configure` first.")
                 return@execute
             }
-            configuration[guild.id]?.enabled = true
-            configuration.save()
+            configuration.edit { guildConfigurations[guild.id]?.enabled = true }
             respondPublic("Reactions enabled")
         }
     }
 
-    slash("disable") {
-        description = "Disable the bot reactions"
+    slash("disable", "Disable the bot reactions") {
         execute {
             if (!configuration.hasGuildConfig(guild.id)) {
                 respond("Guild configuration does not exist. Run `/configure` first.")
                 return@execute
             }
-            configuration[guild.id]?.enabled = false
-            configuration.save()
+            configuration.edit { guildConfigurations[guild.id]?.enabled = false }
             respondPublic("Reactions disabled")
         }
     }
