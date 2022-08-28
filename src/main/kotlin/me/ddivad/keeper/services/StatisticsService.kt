@@ -9,7 +9,6 @@ import java.util.*
 
 @Service
 class StatisticsService(private val configuration: Configuration, private val discord: Discord) {
-    private var startTime: Date = Date()
     private var _totalBookmarks: Int = 0
     var totalBookmarks: Int
         get() = _totalBookmarks
