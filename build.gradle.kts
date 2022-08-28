@@ -1,7 +1,7 @@
 import java.util.*
 
 group = "me.ddivad"
-version = "1.9.1"
+version = "1.9.2"
 description = "A bot for saving useful messages to a DM by reacting to them."
 
 plugins {
@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation("me.jakejmattson:DiscordKt:0.23.3")
+    implementation("me.jakejmattson:DiscordKt:0.23.4")
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.20")
 }
 

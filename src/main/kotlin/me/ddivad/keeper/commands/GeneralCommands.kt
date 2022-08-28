@@ -4,6 +4,7 @@ import dev.kord.rest.request.KtorRequestException
 import dev.kord.x.emoji.Emojis
 import dev.kord.x.emoji.addReaction
 import me.ddivad.keeper.dataclasses.Configuration
+import me.ddivad.keeper.dataclasses.Permissions
 import me.ddivad.keeper.embeds.buildSavedMessageEmbed
 import me.ddivad.keeper.embeds.buildStatsEmbed
 import me.ddivad.keeper.services.StatisticsService
@@ -15,7 +16,7 @@ private val logger = KotlinLogging.logger { }
 
 @Suppress("unused")
 fun generalCommands(configuration: Configuration, statsService: StatisticsService) = commands("General") {
-    message("Bookmark Message", "bookmark", "Bookmark this message") {
+    message("Bookmark Message", "bookmark", "Bookmark this message", Permissions.EVERYONE) {
         val guild = guild.asGuildOrNull()
         statsService.bookmarkAdded(guild)
         try {
@@ -30,8 +31,7 @@ fun generalCommands(configuration: Configuration, statsService: StatisticsServic
         }
     }
 
-    slash("info") {
-        description = "View statistics about Keeper"
+    slash("stats", "View Keeper statistics", Permissions.EVERYONE) {
         execute {
             respondPublic {
                 buildStatsEmbed(guild, configuration, statsService)
