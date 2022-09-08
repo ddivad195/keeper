@@ -17,7 +17,9 @@ repositories {
 
 dependencies {
     implementation("me.jakejmattson:DiscordKt:0.23.4")
-    implementation("io.github.microutils:kotlin-logging-jvm:2.1.20")
+    implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
+    implementation("ch.qos.logback:logback-classic:1.4.0")
+    implementation("ch.qos.logback:logback-core:1.4.0")
 }
 
 tasks {
