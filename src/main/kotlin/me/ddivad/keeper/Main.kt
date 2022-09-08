@@ -6,7 +6,10 @@ import dev.kord.gateway.Intents
 import dev.kord.gateway.PrivilegedIntent
 import me.ddivad.keeper.dataclasses.Configuration
 import me.jakejmattson.discordkt.dsl.bot
+import mu.KotlinLogging
 import java.awt.Color
+
+val logger = KotlinLogging.logger {  }
 
 @KordPreview
 @PrivilegedIntent
@@ -26,6 +29,10 @@ fun main() {
                 Intent.GuildMessageReactions,
                 Intent.DirectMessagesReactions
             )
+        }
+
+        onStart {
+            logger.info { "Bot Ready" }
         }
     }
 }
