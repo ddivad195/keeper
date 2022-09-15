@@ -17,10 +17,7 @@ import me.ddivad.keeper.utilities.buildLogMessage
 import me.jakejmattson.discordkt.commands.commands
 import me.jakejmattson.discordkt.conversations.conversation
 import me.jakejmattson.discordkt.dsl.edit
-import me.jakejmattson.discordkt.extensions.TimeStamp
-import me.jakejmattson.discordkt.extensions.TimeStyle
-import me.jakejmattson.discordkt.extensions.jumpLink
-import me.jakejmattson.discordkt.extensions.sendPrivateMessage
+import me.jakejmattson.discordkt.extensions.*
 import mu.KotlinLogging
 import java.time.Instant
 import java.util.concurrent.TimeUnit
@@ -37,7 +34,7 @@ fun generalCommands(configuration: Configuration, statsService: StatisticsServic
                 buildSavedMessageEmbed(args.first.asMessage(), guild)
             }.addReaction(Emojis.x)
             respond("Message Bookmarked ${Emojis.bookmark}")
-            logger.info { buildLogMessage(guild, "Message Bookmarked by ${this.author.username}") }
+            logger.info { buildLogMessage(guild, "Message Bookmarked by ${this.author.idDescriptor()}") }
         } catch (e: KtorRequestException) {
             respond("Looks like you have DMs disabled. To bookmark messages, this needs to be enabled.")
             logger.error { buildLogMessage(guild, "Bookmark DM could not be sent") }
@@ -81,7 +78,7 @@ class TimeConversation(private val configuration: Configuration) {
             this.selectionCount = 1..1
             content("Choose a reminder duration")
             option("1hr", description = "Set a 1 hour reminder", value = "3600000")
-            option("3hr", description = "Set a 1 hour reminder", value = "10800000")
+            option("3hr", description = "Set a 3 hour reminder", value = "10800000")
             option("12hr", description = "Set a 12 hour reminder", value = "43200000")
             option("24hr", description = "Set a 24 hour reminder", value = "86400000")
             option("cancel", description = "Cancel", value = "cancel")
@@ -97,7 +94,7 @@ class TimeConversation(private val configuration: Configuration) {
             logger.info {
                 buildLogMessage(
                     guild,
-                    "Message reminder created by ${user.username} for ${TimeUnit.MILLISECONDS.toHours(time.toLong())} hours"
+                    "Message reminder created by ${user.idDescriptor()} for ${TimeUnit.MILLISECONDS.toHours(time.toLong())} hours"
                 )
             }
         }
