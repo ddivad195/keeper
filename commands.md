@@ -17,7 +17,7 @@
 | Commands | Arguments | Description                    |
 |----------|-----------|--------------------------------|
 | bookmark | Message   | Bookmark this message          |
-| remind   | Message   | Set a reminder about a message |
+| reminder | Message   | Set a reminder about a message |
 | stats    |           | View Keeper statistics         |
 
 ## Utility
