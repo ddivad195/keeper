@@ -18,7 +18,7 @@ fun main() {
     require(token != null) { "Expected the bot token as an environment variable" }
 
     bot(token) {
-       data("config/config.json") { Configuration() }
+        val configuration = data("config/config.json") { Configuration() }
 
         prefix { "/" }
 
@@ -32,6 +32,12 @@ fun main() {
         }
 
         onStart {
+            configuration.guildConfigurations.forEach { entry ->
+                logger.info { "Adding reminders for Guild ${entry.key}" }
+                entry.value.reminders.removeIf { it.endTime < System.currentTimeMillis() }
+                entry.value.reminders.forEach { it.launch(this, configuration) }
+            }
+            logger.info { "Reminders added" }
             logger.info { "Bot Ready" }
         }
     }

@@ -5,8 +5,9 @@ import dev.kord.rest.request.KtorRequestException
 import dev.kord.x.emoji.Emojis
 import dev.kord.x.emoji.addReaction
 import me.ddivad.keeper.dataclasses.Configuration
-import me.ddivad.keeper.services.StatisticsService
 import me.ddivad.keeper.embeds.buildSavedMessageEmbed
+import me.ddivad.keeper.services.StatisticsService
+import me.ddivad.keeper.utilities.buildLogMessage
 import me.jakejmattson.discordkt.dsl.listeners
 import me.jakejmattson.discordkt.extensions.idDescriptor
 import me.jakejmattson.discordkt.extensions.isSelf
@@ -22,7 +23,6 @@ fun onGuildMessageReactionAddEvent(configuration: Configuration, statsService: S
             val guild = guild?.asGuildOrNull() ?: return@on
             val guildConfiguration = configuration[guild.id] ?: return@on
             val msg = message.asMessageOrNull() ?: return@on
-
             if (!guildConfiguration.enabled) return@on
 
             if (this.emoji.name == configuration[guild.id]?.bookmarkReaction) {
@@ -31,9 +31,9 @@ fun onGuildMessageReactionAddEvent(configuration: Configuration, statsService: S
                     this.user.sendPrivateMessage {
                         buildSavedMessageEmbed(msg, guild)
                     }.addReaction(Emojis.x)
-                    logger.info { "${guild.name} (${guild.id}): Message Bookmarked by ${msg.author?.username}" }
+                    logger.info { buildLogMessage(guild, "Message Bookmarked by ${msg.author?.username}") }
                 } catch (e: KtorRequestException) {
-                    logger.error { "${guild.name} (${guild.id}): Bookmark DM could not be sent" }
+                    logger.error { buildLogMessage(guild, "Bookmark DM could not be sent") }
                 }
             }
         } else {
