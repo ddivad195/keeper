@@ -2,7 +2,7 @@ package me.ddivad.keeper.commands
 
 import me.ddivad.keeper.dataclasses.Configuration
 import me.ddivad.keeper.dataclasses.Permissions
-import me.jakejmattson.discordkt.arguments.*
+import me.jakejmattson.discordkt.arguments.UnicodeEmojiArg
 import me.jakejmattson.discordkt.commands.commands
 import me.jakejmattson.discordkt.dsl.edit
 
@@ -26,7 +26,6 @@ fun guildConfigurationCommands(configuration: Configuration) = commands("Configu
                 respond("Guild configuration does not exist. Run `/configure` first.")
                 return@execute
             }
-
             val reaction = args.first
             configuration.edit { guildConfigurations[guild.id]?.bookmarkReaction = reaction.unicode }
             respondPublic("Reaction set to: $reaction")

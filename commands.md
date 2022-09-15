@@ -14,10 +14,11 @@
 | setReaction | Reaction  | Set the reaction used to save messages |
 
 ## General
-| Commands | Arguments | Description            |
-|----------|-----------|------------------------|
-| bookmark | Message   | Bookmark this message  |
-| stats    |           | View Keeper statistics |
+| Commands | Arguments | Description                    |
+|----------|-----------|--------------------------------|
+| bookmark | Message   | Bookmark this message          |
+| remind   | Message   | Set a reminder about a message |
+| stats    |           | View Keeper statistics         |
 
 ## Utility
 | Commands | Arguments | Description          |
