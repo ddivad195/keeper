@@ -37,7 +37,7 @@ fun generalCommands(configuration: Configuration, statsService: StatisticsServic
             logger.info { buildLogMessage(guild, "Message Bookmarked by ${this.author.idDescriptor()}") }
         } catch (e: KtorRequestException) {
             respond("Looks like you have DMs disabled. To bookmark messages, this needs to be enabled.")
-            logger.error { buildLogMessage(guild, "Bookmark DM could not be sent") }
+            logger.error { buildLogMessage(guild, "Bookmark DM could not be sent to ${this.author.idDescriptor()}") }
         }
     }
 
@@ -53,7 +53,7 @@ fun generalCommands(configuration: Configuration, statsService: StatisticsServic
             interactionResponse.respond {
                 content = "Looks like you have DMs disabled. To add message reminders, this needs to be enabled."
             }
-            logger.error { buildLogMessage(guild, "Message reminder could not be added") }
+            logger.error { buildLogMessage(guild, "Message reminder could not be created for ${this.author.idDescriptor()}") }
         }
     }
 
