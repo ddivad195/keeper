@@ -31,9 +31,9 @@ fun onGuildMessageReactionAddEvent(configuration: Configuration, statsService: S
                     this.user.sendPrivateMessage {
                         buildSavedMessageEmbed(msg, guild)
                     }.addReaction(Emojis.x)
-                    logger.info { buildLogMessage(guild, "Message Bookmarked by ${msg.author?.username}") }
+                    logger.info { buildLogMessage(guild, "Message Bookmarked by ${msg.author?.idDescriptor()}") }
                 } catch (e: KtorRequestException) {
-                    logger.error { buildLogMessage(guild, "Bookmark DM could not be sent") }
+                    logger.error { buildLogMessage(guild, "Bookmark DM could not be sent to ${msg.author?.idDescriptor()}") }
                 }
             }
         } else {
