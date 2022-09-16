@@ -24,16 +24,17 @@ fun onGuildMessageReactionAddEvent(configuration: Configuration, statsService: S
             val guildConfiguration = configuration[guild.id] ?: return@on
             val msg = message.asMessageOrNull() ?: return@on
             if (!guildConfiguration.enabled) return@on
+            val user = user.asUser()
 
             if (this.emoji.name == configuration[guild.id]?.bookmarkReaction) {
                 statsService.bookmarkAdded(guild)
                 try {
-                    this.user.sendPrivateMessage {
+                   user.sendPrivateMessage {
                         buildSavedMessageEmbed(msg, guild)
                     }.addReaction(Emojis.x)
-                    logger.info { buildLogMessage(guild, "Message Bookmarked by ${msg.author?.idDescriptor()}") }
+                    logger.info { buildLogMessage(guild, "Message Bookmarked by ${user.idDescriptor()}") }
                 } catch (e: KtorRequestException) {
-                    logger.error { buildLogMessage(guild, "Bookmark DM could not be sent to ${msg.author?.idDescriptor()}") }
+                    logger.error { buildLogMessage(guild, "Bookmark DM could not be sent to ${user.idDescriptor()}") }
                 }
             }
         } else {
