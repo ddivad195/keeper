@@ -1,5 +1,5 @@
 # Keeper
-A bot to allow users to save useful messages to a DM by reacting to them.
+A bot to allow users to save useful messages to a DM by reacting to them. Also allows for "Slack like" reminders to be created via the Discord "Apps" menu accessed by right clicking on a message.
 
 When the bot is enabled, reacting to a message with the specified reaction will save the message to that user's DM.
 
