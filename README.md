@@ -18,15 +18,6 @@ Edit the .env file with your favourite editor, filling out the token and default
 $ docker-compose up --detach
 ```
 
-## Configuration
-To configure the bot for use on a Discord server, the following process should be used:
-
-The default prefix is "keeper!", or tagging the bot can be used as well.
-
-`keeper!configure`
-
-![Configuration](/.github/assets/configuration.png)
-
 ## License
 
 ```
