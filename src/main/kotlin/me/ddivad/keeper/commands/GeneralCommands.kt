@@ -79,6 +79,7 @@ class TimeConversation(private val configuration: Configuration) {
             content("Choose a reminder duration")
             option("1hr", description = "Set a 1 hour reminder", value = "3600000")
             option("3hr", description = "Set a 3 hour reminder", value = "10800000")
+            option("6hr", description = "Set a 6 hour reminder", value = "21600000")
             option("12hr", description = "Set a 12 hour reminder", value = "43200000")
             option("24hr", description = "Set a 24 hour reminder", value = "86400000")
             option("cancel", description = "Cancel", value = "cancel")
